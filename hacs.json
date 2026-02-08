@@ -1,0 +1,10 @@
+{
+  "name": "HAProxy Integration",
+  "content_in_root": false,
+  "domains": ["haproxy"],
+  "country": "DE",
+  "homeassistant": "2023.12.0",
+  "render_readme": true,
+  "zip_release": false,
+  "hide_default_branch": false
+}
