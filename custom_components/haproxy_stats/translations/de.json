@@ -1,1 +1,51 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "HAProxy Stats",
+        "description": "CSV-Stats URL angeben (z. B. http://192.168.1.1:8822/haproxy?stats;csv)",
+        "data": {
+          "name": "Name",
+          "url": "CSV-Stats URL",
+          "username": "Benutzername (optional)",
+          "password": "Passwort (optional)",
+          "verify_ssl": "SSL-Zertifikat pruefen",
+          "scan_interval": "Aktualisierungsintervall (Sek.)"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Verbindung fehlgeschlagen"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "HAProxy Stats Optionen",
+        "data": {
+          "scan_interval": "Aktualisierungsintervall (Sek.)",
+          "verify_ssl": "SSL-Zertifikat pruefen"
+        }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "sessions": {"name": "Sessions"},
+      "sessions_max": {"name": "Max. Sessions"},
+      "sessions_total": {"name": "Sessions gesamt"},
+      "bytes_in": {"name": "MB rein"},
+      "bytes_out": {"name": "MB raus"},
+      "session_rate": {"name": "Session-Rate"},
+      "errors_request": {"name": "Request-Fehler"},
+      "errors_response": {"name": "Response-Fehler"},
+      "errors_connection": {"name": "Verbindungsfehler"},
+      "warnings_retries": {"name": "Retry-Warnungen"},
+      "warnings_redispatch": {"name": "Redispatch-Warnungen"}
+    },
+    "binary_sensor": {
+      "availability": {"name": "Verfuegbar"}
+    }
+  }
+}
 
