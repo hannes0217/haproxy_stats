@@ -50,11 +50,11 @@ MANUAL INSTALLATION
 
 1. Copy the integration folder from this repository:
 
-   custom_components/haproxy
+   custom_components/haproxy_stats
 
 2. Paste it into your Home Assistant configuration directory:
 
-   /config/custom_components/haproxy
+   /config/custom_components/haproxy_stats
 
 3. Restart Home Assistant
 
