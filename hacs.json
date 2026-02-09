@@ -1,5 +1,5 @@
 {
-  "name": "HAProxy Stats (CSV)",
+  "name": "HAProxy Stats",
   "content_in_root": false,
   "domains": ["haproxy_stats"],
   "country": "DE",
