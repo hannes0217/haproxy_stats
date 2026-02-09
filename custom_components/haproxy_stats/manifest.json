@@ -1,6 +1,6 @@
 {
   "domain": "haproxy_stats",
-  "name": "HAProxy Stats (CSV)",
+  "name": "HAProxy Stats",
   "version": "1.1.3",
   "documentation": "https://github.com/hannes0217/haproxy_stats",
   "issue_tracker": "https://github.com/hannes0217/haproxy_stats/issues",
