@@ -164,3 +164,7 @@ LICENSE
 -------
 
 MIT License
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=hannes0217/haproxy_stats&type=date&legend=top-left)](https://www.star-history.com/#hannes0217/haproxy_stats&type=date&legend=top-left)
