@@ -1,10 +1,11 @@
 {
   "domain": "haproxy_stats",
-  "name": "HAProxy Stats",
+  "name": "HAProxy Stats (CSV)",
   "version": "1.1.3",
-  "documentation": "https://www.haproxy.org/",
+  "documentation": "https://github.com/hannes0217/haproxy_stats",
+  "issue_tracker": "https://github.com/hannes0217/haproxy_stats/issues",
   "requirements": [],
-  "codeowners": [],
+  "codeowners": ["@hannes0217"],
   "config_flow": true,
   "iot_class": "local_polling",
   "loggers": ["custom_components.haproxy_stats"]
