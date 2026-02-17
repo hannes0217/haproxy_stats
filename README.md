@@ -21,6 +21,7 @@ FEATURES
   - Automations (e.g. notifications when a backend goes DOWN)
 
 - Lightweight polling using the HAProxy CSV stats endpoint
+- Configurable data-size unit for traffic counters (B, kB, MB, GB, TB)
 - No cloud or external services required
 
 
