@@ -36,7 +36,10 @@ class HAProxyStatsCoordinator(DataUpdateCoordinator[dict[str, dict[str, str]]]):
         url = self.entry.data[CONF_URL]
         username = self.entry.data.get(CONF_USERNAME)
         password = self.entry.data.get(CONF_PASSWORD)
-        verify_ssl = self.entry.data.get(CONF_VERIFY_SSL, False)
+        verify_ssl = self.entry.options.get(
+            CONF_VERIFY_SSL,
+            self.entry.data.get(CONF_VERIFY_SSL, False),
+        )
 
         auth = None
         if username or password:

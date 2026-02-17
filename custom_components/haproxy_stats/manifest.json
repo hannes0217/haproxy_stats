@@ -1,7 +1,7 @@
 {
   "domain": "haproxy_stats",
   "name": "HAProxy Stats",
-  "version": "1.1.4",
+  "version": "1.2.0",
   "documentation": "https://github.com/hannes0217/haproxy_stats",
   "issue_tracker": "https://github.com/hannes0217/haproxy_stats/issues",
   "requirements": [],

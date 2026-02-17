@@ -6,11 +6,11 @@ from aiohttp import BasicAuth
 
 from homeassistant import config_entries
 from homeassistant.core import HomeAssistant
-from homeassistant.helpers import config_validation as cv
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
 from .const import (
     DOMAIN,
+    CONF_DATA_SIZE_UNIT,
     CONF_NAME,
     CONF_URL,
     CONF_USERNAME,
@@ -19,8 +19,10 @@ from .const import (
     CONF_SCAN_INTERVAL,
     DEFAULT_NAME,
     DEFAULT_URL,
+    DEFAULT_DATA_SIZE_UNIT,
     DEFAULT_VERIFY_SSL,
     DEFAULT_SCAN_INTERVAL,
+    DATA_SIZE_UNITS,
 )
 
 
@@ -79,6 +81,10 @@ class HAProxyStatsConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                     CONF_SCAN_INTERVAL,
                     default=DEFAULT_SCAN_INTERVAL,
                 ): vol.All(vol.Coerce(int), vol.Range(min=5, max=3600)),
+                vol.Optional(
+                    CONF_DATA_SIZE_UNIT,
+                    default=DEFAULT_DATA_SIZE_UNIT,
+                ): vol.In(DATA_SIZE_UNITS),
             }
         )
 
@@ -120,6 +126,13 @@ class HAProxyStatsOptionsFlow(config_entries.OptionsFlow):
                         self.entry.data.get(CONF_VERIFY_SSL, DEFAULT_VERIFY_SSL),
                     ),
                 ): bool,
+                vol.Optional(
+                    CONF_DATA_SIZE_UNIT,
+                    default=self.entry.options.get(
+                        CONF_DATA_SIZE_UNIT,
+                        self.entry.data.get(CONF_DATA_SIZE_UNIT, DEFAULT_DATA_SIZE_UNIT),
+                    ),
+                ): vol.In(DATA_SIZE_UNITS),
             }
         )
 

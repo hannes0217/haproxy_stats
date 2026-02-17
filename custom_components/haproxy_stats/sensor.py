@@ -14,15 +14,28 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
-from .const import DOMAIN
+from .const import (
+    DOMAIN,
+    CONF_DATA_SIZE_UNIT,
+    DATA_SIZE_UNIT_FACTORS,
+    DEFAULT_DATA_SIZE_UNIT,
+)
 from .coordinator import HAProxyStatsCoordinator
 from .entity import HAProxyStatsEntity
+
+HA_DATA_SIZE_UNITS = {
+    "B": UnitOfInformation.BYTES,
+    "kB": UnitOfInformation.KILOBYTES,
+    "MB": UnitOfInformation.MEGABYTES,
+    "GB": UnitOfInformation.GIGABYTES,
+    "TB": UnitOfInformation.TERABYTES,
+}
 
 
 @dataclass(frozen=True, kw_only=True)
 class HAProxySensorEntityDescription(SensorEntityDescription):
     parse_int: bool = True
-    scale: float | None = None
+    is_data_size: bool = False
 
 
 SENSOR_DESCRIPTIONS: tuple[HAProxySensorEntityDescription, ...] = (
@@ -50,23 +63,23 @@ SENSOR_DESCRIPTIONS: tuple[HAProxySensorEntityDescription, ...] = (
     HAProxySensorEntityDescription(
         key="bin",
         translation_key="bytes_in",
-        name="MB In",
+        name="Bytes In",
         device_class=SensorDeviceClass.DATA_SIZE,
-        unit_of_measurement=UnitOfInformation.MEGABYTES,
+        native_unit_of_measurement=UnitOfInformation.MEGABYTES,
         state_class=SensorStateClass.TOTAL_INCREASING,
         parse_int=False,
-        scale=1 / (1024 * 1024),
+        is_data_size=True,
         suggested_display_precision=2,
     ),
     HAProxySensorEntityDescription(
         key="bout",
         translation_key="bytes_out",
-        name="MB Out",
+        name="Bytes Out",
         device_class=SensorDeviceClass.DATA_SIZE,
-        unit_of_measurement=UnitOfInformation.MEGABYTES,
+        native_unit_of_measurement=UnitOfInformation.MEGABYTES,
         state_class=SensorStateClass.TOTAL_INCREASING,
         parse_int=False,
-        scale=1 / (1024 * 1024),
+        is_data_size=True,
         suggested_display_precision=2,
     ),
     HAProxySensorEntityDescription(
@@ -150,6 +163,23 @@ class HAProxyStatsSensor(HAProxyStatsEntity, SensorEntity):
     ) -> None:
         super().__init__(coordinator, entry, row_key, description)
         self._attr_unique_id = f"{entry.entry_id}_{row_key}_{description.key}"
+        self._data_size_unit = entry.options.get(
+            CONF_DATA_SIZE_UNIT,
+            entry.data.get(CONF_DATA_SIZE_UNIT, DEFAULT_DATA_SIZE_UNIT),
+        )
+
+    @property
+    def native_unit_of_measurement(self):
+        if (
+            isinstance(self.entity_description, HAProxySensorEntityDescription)
+            and self.entity_description.is_data_size
+        ):
+            return HA_DATA_SIZE_UNITS.get(
+                self._data_size_unit,
+                UnitOfInformation.MEGABYTES,
+            )
+
+        return self.entity_description.native_unit_of_measurement
 
     @property
     def native_value(self):
@@ -163,16 +193,23 @@ class HAProxyStatsSensor(HAProxyStatsEntity, SensorEntity):
 
         if (
             isinstance(self.entity_description, HAProxySensorEntityDescription)
+            and self.entity_description.is_data_size
+        ):
+            try:
+                bytes_value = float(raw)
+                factor = DATA_SIZE_UNIT_FACTORS.get(self._data_size_unit)
+                if not factor:
+                    return None
+                return bytes_value / factor
+            except ValueError:
+                return None
+
+        if (
+            isinstance(self.entity_description, HAProxySensorEntityDescription)
             and self.entity_description.parse_int
         ):
             try:
                 return int(float(raw))
-            except ValueError:
-                return None
-
-        if isinstance(self.entity_description, HAProxySensorEntityDescription) and self.entity_description.scale:
-            try:
-                return float(raw) * self.entity_description.scale
             except ValueError:
                 return None
 
