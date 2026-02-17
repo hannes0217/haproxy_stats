@@ -37,7 +37,7 @@ DOWN_STATUSES = {
 
 @dataclass(frozen=True, kw_only=True)
 class HAProxyBinarySensorEntityDescription(BinarySensorEntityDescription):
-    pass
+    only_svname: str | None = None
 
 
 BINARY_SENSOR_DESCRIPTIONS: tuple[HAProxyBinarySensorEntityDescription, ...] = (
@@ -46,6 +46,13 @@ BINARY_SENSOR_DESCRIPTIONS: tuple[HAProxyBinarySensorEntityDescription, ...] = (
         translation_key="availability",
         name="Available",
         device_class=BinarySensorDeviceClass.CONNECTIVITY,
+    ),
+    HAProxyBinarySensorEntityDescription(
+        key="backend_up",
+        translation_key="backend_up",
+        name="Backend Up",
+        device_class=BinarySensorDeviceClass.CONNECTIVITY,
+        only_svname="BACKEND",
     ),
 )
 
@@ -61,7 +68,11 @@ async def async_setup_entry(
     entities: list[HAProxyStatsBinarySensor] = []
 
     for row_key in coordinator.data:
+        row = coordinator.data[row_key]
+        svname = (row.get("svname") or "").upper()
         for description in BINARY_SENSOR_DESCRIPTIONS:
+            if description.only_svname and svname != description.only_svname:
+                continue
             unique_id = f"{entry.entry_id}_{row_key}_{description.key}"
             if unique_id in entities_known:
                 continue
@@ -90,6 +101,13 @@ class HAProxyStatsBinarySensor(HAProxyStatsEntity, BinarySensorEntity):
 
         status = (row.get("status") or "").upper()
         if not status:
+            return None
+
+        if self.entity_description.key == "backend_up":
+            if status in UP_STATUSES or status.startswith("UP"):
+                return True
+            if status:
+                return False
             return None
 
         if status in UP_STATUSES or status.startswith("UP"):

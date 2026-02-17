@@ -46,7 +46,8 @@
       "warnings_redispatch": {"name": "Redispatch Warnings"}
     },
     "binary_sensor": {
-      "availability": {"name": "Available"}
+      "availability": {"name": "Available"},
+      "backend_up": {"name": "Backend Up"}
     }
   }
 }
