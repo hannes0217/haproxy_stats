@@ -13,6 +13,7 @@ FEATURES
 - Monitor HAProxy components:
   - Backend status (UP / DOWN / MAINT)
   - Server status
+  - Dedicated backend-up health binary sensor for automations
   - Active sessions
   - Queues and connection counters (depending on HAProxy stats)
 
