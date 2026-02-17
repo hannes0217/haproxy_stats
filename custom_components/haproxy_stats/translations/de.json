@@ -10,7 +10,8 @@
           "username": "Benutzername (optional)",
           "password": "Passwort (optional)",
           "verify_ssl": "SSL-Zertifikat pruefen",
-          "scan_interval": "Aktualisierungsintervall (Sek.)"
+          "scan_interval": "Aktualisierungsintervall (Sek.)",
+          "data_size_unit": "Datengroessen-Einheit"
         }
       }
     },
@@ -24,7 +25,8 @@
         "title": "HAProxy Stats Optionen",
         "data": {
           "scan_interval": "Aktualisierungsintervall (Sek.)",
-          "verify_ssl": "SSL-Zertifikat pruefen"
+          "verify_ssl": "SSL-Zertifikat pruefen",
+          "data_size_unit": "Datengroessen-Einheit"
         }
       }
     }
@@ -34,8 +36,8 @@
       "sessions": {"name": "Sessions"},
       "sessions_max": {"name": "Max. Sessions"},
       "sessions_total": {"name": "Sessions gesamt"},
-      "bytes_in": {"name": "MB rein"},
-      "bytes_out": {"name": "MB raus"},
+      "bytes_in": {"name": "Daten rein"},
+      "bytes_out": {"name": "Daten raus"},
       "session_rate": {"name": "Session-Rate"},
       "errors_request": {"name": "Request-Fehler"},
       "errors_response": {"name": "Response-Fehler"},
@@ -48,4 +50,3 @@
     }
   }
 }
-
